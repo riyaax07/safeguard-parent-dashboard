@@ -10,13 +10,17 @@ const DOMAIN_REGEX = /^([a-zA-Z0-9]([a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?\.)+[a-zA-Z]{
 export function QuickBlockForm() {
   const [domain, setDomain] = useState("");
   const [error, setError] = useState("");
-  const { blockDomain, isBlocking } = useBlocklist();
+  const { blockDomain, isBlocking, isDomainBlocked } = useBlocklist();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    const trimmed = domain.trim().toLowerCase();
+    const trimmed = domain.trim().toLowerCase().replace(/^www\./, "");
     if (!DOMAIN_REGEX.test(trimmed)) {
-      setError("Please enter a valid domain (e.g. example.com)");
+      setError("Please enter a valid domain (e.g. tiktok.com)");
+      return;
+    }
+    if (isDomainBlocked(trimmed)) {
+      setError("This domain is already blocked");
       return;
     }
     setError("");
