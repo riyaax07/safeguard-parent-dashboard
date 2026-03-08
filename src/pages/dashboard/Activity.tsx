@@ -118,8 +118,8 @@ export default function ActivityPage() {
                     </TableCell>
                     <TableCell className="hidden lg:table-cell text-xs text-muted-foreground">{v.device_id}</TableCell>
                     <TableCell>
-                      {blockedDomains.has(v.domain) ? (
-                        <span className="text-xs text-muted-foreground">Blocked</span>
+                      {isDomainBlocked(v.domain) ? (
+                        <span className="text-xs text-muted-foreground">✓ Blocked</span>
                       ) : (
                         <Button variant="ghost" size="sm" className="h-7 opacity-0 group-hover:opacity-100 text-destructive hover:text-destructive" onClick={() => blockDomain(v.domain)}>
                           <Ban className="h-3 w-3 mr-1" /> Block
