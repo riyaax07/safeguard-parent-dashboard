@@ -14,7 +14,183 @@ export type Database = {
   }
   public: {
     Tables: {
-      [_ in never]: never
+      alerts: {
+        Row: {
+          device_id: string
+          domain: string
+          id: string
+          is_read: boolean | null
+          matched_keyword: string
+          parent_id: string
+          reason: string
+          timestamp: string | null
+        }
+        Insert: {
+          device_id: string
+          domain: string
+          id?: string
+          is_read?: boolean | null
+          matched_keyword: string
+          parent_id: string
+          reason?: string
+          timestamp?: string | null
+        }
+        Update: {
+          device_id?: string
+          domain?: string
+          id?: string
+          is_read?: boolean | null
+          matched_keyword?: string
+          parent_id?: string
+          reason?: string
+          timestamp?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "alerts_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      blocked_sites: {
+        Row: {
+          created_at: string | null
+          domain: string
+          id: string
+          notes: string | null
+          parent_id: string
+        }
+        Insert: {
+          created_at?: string | null
+          domain: string
+          id?: string
+          notes?: string | null
+          parent_id: string
+        }
+        Update: {
+          created_at?: string | null
+          domain?: string
+          id?: string
+          notes?: string | null
+          parent_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "blocked_sites_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      devices: {
+        Row: {
+          child_name: string
+          device_id: string
+          id: string
+          last_seen: string | null
+          pairing_code: string | null
+          pairing_expires_at: string | null
+          parent_id: string
+          registered_at: string | null
+        }
+        Insert: {
+          child_name: string
+          device_id: string
+          id?: string
+          last_seen?: string | null
+          pairing_code?: string | null
+          pairing_expires_at?: string | null
+          parent_id: string
+          registered_at?: string | null
+        }
+        Update: {
+          child_name?: string
+          device_id?: string
+          id?: string
+          last_seen?: string | null
+          pairing_code?: string | null
+          pairing_expires_at?: string | null
+          parent_id?: string
+          registered_at?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "devices_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      profiles: {
+        Row: {
+          created_at: string | null
+          email: string
+          full_name: string | null
+          id: string
+        }
+        Insert: {
+          created_at?: string | null
+          email: string
+          full_name?: string | null
+          id: string
+        }
+        Update: {
+          created_at?: string | null
+          email?: string
+          full_name?: string | null
+          id?: string
+        }
+        Relationships: []
+      }
+      visits: {
+        Row: {
+          device_id: string
+          domain: string
+          full_url: string | null
+          id: string
+          parent_id: string
+          timestamp: string
+        }
+        Insert: {
+          device_id: string
+          domain: string
+          full_url?: string | null
+          id?: string
+          parent_id: string
+          timestamp?: string
+        }
+        Update: {
+          device_id?: string
+          domain?: string
+          full_url?: string | null
+          id?: string
+          parent_id?: string
+          timestamp?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "visits_device_id_fkey"
+            columns: ["device_id"]
+            isOneToOne: false
+            referencedRelation: "devices"
+            referencedColumns: ["device_id"]
+          },
+          {
+            foreignKeyName: "visits_parent_id_fkey"
+            columns: ["parent_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
     }
     Views: {
       [_ in never]: never
