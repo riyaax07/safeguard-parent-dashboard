@@ -17,7 +17,7 @@ export default function ActivityPage() {
   const [deviceFilter, setDeviceFilter] = useState("all");
   const [page, setPage] = useState(0);
   const { visits, total, isLoading } = useVisits({ limit: 50, offset: page * 50, deviceId: deviceFilter === "all" ? undefined : deviceFilter });
-  const { sites, blockDomain } = useBlocklist();
+  const { sites, blockDomain, isDomainBlocked } = useBlocklist();
   const { devices } = useDevices();
 
   const blockedDomains = useMemo(() => new Set(sites.map((s) => s.domain)), [sites]);
