@@ -222,11 +222,12 @@ function NotificationSection() {
         .eq("id", user!.id)
         .single();
       if (error) throw error;
-      return (data?.notification_preferences ?? {
-        realtime_alerts: true,
-        email_daily_summary: false,
-        alert_sound: true,
-      }) as NotificationPrefs;
+      const raw = data?.notification_preferences as Record<string, boolean> | null;
+      return {
+        realtime_alerts: raw?.realtime_alerts ?? true,
+        email_daily_summary: raw?.email_daily_summary ?? false,
+        alert_sound: raw?.alert_sound ?? true,
+      } satisfies NotificationPrefs;
     },
     enabled: !!user,
   });
@@ -235,7 +236,7 @@ function NotificationSection() {
     mutationFn: async (updated: NotificationPrefs) => {
       const { error } = await supabase
         .from("profiles")
-        .update({ notification_preferences: updated as unknown as Record<string, unknown> })
+        .update({ notification_preferences: JSON.parse(JSON.stringify(updated)) })
         .eq("id", user!.id);
       if (error) throw error;
     },
