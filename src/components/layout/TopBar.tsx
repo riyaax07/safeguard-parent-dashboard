@@ -9,6 +9,7 @@ const routeTitles: Record<string, string> = {
   "/dashboard/blocklist": "Blocklist",
   "/dashboard/alerts": "Alerts",
   "/dashboard/devices": "Devices",
+  "/dashboard/settings": "Settings",
 };
 
 interface TopBarProps {
