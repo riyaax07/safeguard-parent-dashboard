@@ -1,7 +1,7 @@
 import { NavLink, useNavigate } from "react-router-dom";
 import { useAuth } from "@/contexts/AuthContext";
 import { useAlerts } from "@/hooks/useAlerts";
-import { Shield, LayoutDashboard, Activity, Ban, AlertTriangle, Smartphone, LogOut, X } from "lucide-react";
+import { Shield, LayoutDashboard, Activity, Ban, AlertTriangle, Smartphone, Settings, LogOut, X } from "lucide-react";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -12,6 +12,7 @@ const navItems = [
   { to: "/dashboard/blocklist", icon: Ban, label: "Blocklist" },
   { to: "/dashboard/alerts", icon: AlertTriangle, label: "Alerts", badge: true },
   { to: "/dashboard/devices", icon: Smartphone, label: "Devices" },
+  { to: "/dashboard/settings", icon: Settings, label: "Settings" },
 ];
 
 interface SidebarProps {

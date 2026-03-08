@@ -12,6 +12,7 @@ import Activity from "@/pages/dashboard/Activity";
 import Blocklist from "@/pages/dashboard/Blocklist";
 import AlertsPage from "@/pages/dashboard/Alerts";
 import Devices from "@/pages/dashboard/Devices";
+import Settings from "@/pages/dashboard/Settings";
 
 const queryClient = new QueryClient();
 
@@ -38,6 +39,7 @@ const App = () => (
               <Route path="blocklist" element={<Blocklist />} />
               <Route path="alerts" element={<AlertsPage />} />
               <Route path="devices" element={<Devices />} />
+              <Route path="settings" element={<Settings />} />
             </Route>
             <Route path="*" element={<Navigate to="/dashboard" replace />} />
           </Routes>

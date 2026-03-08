@@ -134,18 +134,21 @@ export type Database = {
           email: string
           full_name: string | null
           id: string
+          notification_preferences: Json | null
         }
         Insert: {
           created_at?: string | null
           email: string
           full_name?: string | null
           id: string
+          notification_preferences?: Json | null
         }
         Update: {
           created_at?: string | null
           email?: string
           full_name?: string | null
           id?: string
+          notification_preferences?: Json | null
         }
         Relationships: []
       }
