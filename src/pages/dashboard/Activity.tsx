@@ -20,7 +20,7 @@ export default function ActivityPage() {
   const { sites, blockDomain, isDomainBlocked } = useBlocklist();
   const { devices } = useDevices();
 
-  const blockedDomains = useMemo(() => new Set(sites.map((s) => s.domain)), [sites]);
+  
 
   const filtered = useMemo(() => {
     if (!search) return visits;
