@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -8,6 +8,7 @@ import type { Alert } from "@/types";
 export function useAlerts(unreadOnly = false) {
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const channelRef = useRef<ReturnType<typeof supabase.channel> | null>(null);
 
   const { data: alerts = [], isLoading, error, refetch } = useQuery({
     queryKey: ["alerts", user?.id, unreadOnly],
@@ -52,11 +53,23 @@ export function useAlerts(unreadOnly = false) {
 
   useEffect(() => {
     if (!user) return;
+
+    // If a channel already exists, remove it first before creating a new one
+    if (channelRef.current) {
+      supabase.removeChannel(channelRef.current);
+      channelRef.current = null;
+    }
+
     const channel = supabase
-      .channel("alerts-realtime")
+      .channel(`alerts-${user.id}-${Date.now()}`)
       .on(
         "postgres_changes",
-        { event: "INSERT", schema: "public", table: "alerts", filter: `parent_id=eq.${user.id}` },
+        {
+          event: "INSERT",
+          schema: "public",
+          table: "alerts",
+          filter: `parent_id=eq.${user.id}`,
+        },
         (payload) => {
           const newAlert = payload.new as Alert;
           toast.warning(`⚠️ Suspicious site detected: ${newAlert.domain}`);
@@ -65,8 +78,16 @@ export function useAlerts(unreadOnly = false) {
         }
       )
       .subscribe();
-    return () => { supabase.removeChannel(channel); };
-  }, [user, queryClient]);
+
+    channelRef.current = channel;
+
+    return () => {
+      if (channelRef.current) {
+        supabase.removeChannel(channelRef.current);
+        channelRef.current = null;
+      }
+    };
+  }, [user?.id, queryClient]);
 
   return {
     alerts,

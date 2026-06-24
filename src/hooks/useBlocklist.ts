@@ -1,4 +1,4 @@
-import { useEffect, useCallback } from "react";
+import { useEffect, useCallback, useRef } from "react";
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { useAuth } from "@/contexts/AuthContext";
@@ -8,6 +8,7 @@ import type { BlockedSite } from "@/types";
 export function useBlocklist() {
   const { user } = useAuth();
   const queryClient = useQueryClient();
+  const channelRef = useRef<ReturnType<typeof supabase.channel> | null>(null);
 
   const { data: sites = [], isLoading, error, refetch } = useQuery({
     queryKey: ["blocklist", user?.id],
@@ -75,8 +76,15 @@ export function useBlocklist() {
 
   useEffect(() => {
     if (!user?.id) return;
+
+    // Remove existing channel before creating a new one
+    if (channelRef.current) {
+      supabase.removeChannel(channelRef.current);
+      channelRef.current = null;
+    }
+
     const channel = supabase
-      .channel(`blocklist-${user.id}`)
+      .channel(`blocklist-${user.id}-${Date.now()}`)
       .on(
         "postgres_changes",
         { event: "INSERT", schema: "public", table: "blocked_sites", filter: `parent_id=eq.${user.id}` },
@@ -99,7 +107,15 @@ export function useBlocklist() {
         }
       )
       .subscribe();
-    return () => { supabase.removeChannel(channel); };
+
+    channelRef.current = channel;
+
+    return () => {
+      if (channelRef.current) {
+        supabase.removeChannel(channelRef.current);
+        channelRef.current = null;
+      }
+    };
   }, [user?.id, queryClient]);
 
   const isDomainBlocked = useCallback(
