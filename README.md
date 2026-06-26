@@ -1,73 +1,104 @@
-# Welcome to your Lovable project
+# SafeGuard — Parental Monitoring System
 
-## Project info
+A full-stack parental control system built with React, Supabase, and a Chrome Extension. Parents can monitor their child's browsing activity, block websites, and get alerts in real time.
 
-**URL**: https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID
+## How it works
 
-## How can I edit this code?
+```
+[Child's Chrome Browser]          [Parent Dashboard]
+   Chrome Extension          ←→      React Web App
+          ↓                                ↓
+          └──────────── Supabase ──────────┘
+                     (shared database)
+```
 
-There are several ways of editing your application.
+1. Parent generates a 6-digit pairing code on the dashboard
+2. Child enters the code in the Chrome extension to link the device
+3. Extension monitors browsing, blocks blacklisted sites, and logs visits
+4. Parent sees activity, manages blocklist, and receives alerts in real time
 
-**Use Lovable**
+## Tech Stack
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and start prompting.
+**Dashboard**
+- React + TypeScript + Vite
+- Tailwind CSS + shadcn/ui
+- Supabase (auth, database, realtime)
+- TanStack Query
 
-Changes made via Lovable will be committed automatically to this repo.
+**Chrome Extension**
+- Manifest V3
+- Vanilla JS
+- Supabase REST API (direct fetch)
 
-**Use your preferred IDE**
+## Getting Started
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### Prerequisites
+- Node.js & npm
+- A Supabase project
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
-
-Follow these steps:
+### 1. Clone the repo
 
 ```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+git clone https://github.com/riyaax07/safeguard-parent-dashboard.git
+cd safeguard-parent-dashboard
+```
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### 2. Set up environment variables
 
-# Step 3: Install the necessary dependencies.
-npm i
+Create a `.env` file in the root:
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
+```env
+VITE_SUPABASE_URL=https://your-project-id.supabase.co
+VITE_SUPABASE_PUBLISHABLE_KEY=your-anon-key
+```
+
+### 3. Set up the database
+
+Run the SQL migrations in your Supabase SQL Editor (see `/supabase` folder).
+
+### 4. Start the dashboard
+
+```sh
+npm install
 npm run dev
 ```
 
-**Edit a file directly in GitHub**
+### 5. Load the Chrome Extension
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+1. Open `chrome://extensions/`
+2. Enable **Developer mode**
+3. Click **Load unpacked** → select the `/extension` folder
+4. Open the extension popup and enter the pairing code from the dashboard
 
-**Use GitHub Codespaces**
+## Project Structure
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+```
+safeguard-parent-dashboard/
+├── src/
+│   ├── pages/dashboard/     # Overview, Activity, Blocklist, Devices, Alerts
+│   ├── hooks/               # useDevices, useBlocklist, useAlerts, useVisits
+│   ├── contexts/            # AuthContext
+│   ├── components/          # UI components + layout
+│   └── integrations/        # Supabase client + types
+├── extension/
+│   ├── manifest.json
+│   ├── background.js        # Service worker: navigation monitoring + blocking
+│   ├── popup.html/js        # Pairing UI
+│   └── blocked.html/css     # Blocked site page shown to child
+└── supabase/                # SQL migrations
+```
 
-## What technologies are used for this project?
+## Deployment
 
-This project is built with:
+The dashboard is deployed on Vercel. Each push to `main` triggers an automatic redeploy.
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+Environment variables are set in the Vercel dashboard under Project Settings → Environment Variables.
 
-## How can I deploy this project?
+## Features
 
-Simply open [Lovable](https://lovable.dev/projects/REPLACE_WITH_PROJECT_ID) and click on Share -> Publish.
-
-## Can I connect a custom domain to my Lovable project?
-
-Yes, you can!
-
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
-
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+- 🔐 Parent authentication (email + password)
+- 📱 Device pairing via 6-digit code
+- 🚫 Website blocklist (add/remove domains)
+- 📊 Real-time browsing activity log
+- ⚠️ Alerts for suspicious sites
+- 🔄 Auto-syncing blocklist to extension every 30 seconds
