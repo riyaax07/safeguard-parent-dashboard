@@ -1,0 +1,23 @@
+{
+  "manifest_version": 3,
+  "name": "SafeGuard Child Monitor",
+  "version": "1.0.0",
+  "description": "Keeps children safe online.",
+  "permissions": [
+    "webNavigation",
+    "storage",
+    "tabs",
+    "alarms"
+  ],
+  "host_permissions": ["<all_urls>"],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  },
+  "web_accessible_resources": [{
+    "resources": ["blocked.html", "blocked.css"],
+    "matches": ["<all_urls>"]
+  }]
+}

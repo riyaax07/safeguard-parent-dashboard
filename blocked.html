@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Blocked – SafeGuard</title>
+  <link rel="stylesheet" href="blocked.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="icon">🛡️</div>
+    <h1>Website Blocked</h1>
+    <p class="sub">This website has been blocked by your parent for your safety.</p>
+    <div class="domain-badge" id="domain"></div>
+    <p class="help">If you think this is a mistake, please speak with your parent.</p>
+    <button onclick="history.back()">← Go Back</button>
+  </div>
+  <script>
+    const domain = new URLSearchParams(location.search).get('domain') || 'this website'
+    document.getElementById('domain').textContent = domain
+  </script>
+</body>
+</html>

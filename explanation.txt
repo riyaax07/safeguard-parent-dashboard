@@ -1,0 +1,15 @@
+*maifest.json : It works as ID card (introduces the extension to the chrome)
+    This is the extension asking Chrome for specific powers. Chrome won't let an extension do anything unless it asks first.
+
+webNavigation → "let me watch when the user goes to a website"
+storage → "let me save data locally on this device"
+tabs → "let me control browser tabs"
+alarms → "let me set a repeating timer"
+background tells where exactly is the brain of this extension
+actiont tells where to look at when someone clicks the extension
+background.js is the main brain 
+  it has 4 jobs
+  1. load the blocklist from supbase
+  2.check if the domain is blocked
+  3.watch the navigation
+  4.log every visit to supbase

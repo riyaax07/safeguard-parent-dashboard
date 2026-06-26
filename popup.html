@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <style>
+    body {
+      width: 280px;
+      padding: 20px;
+      font-family: sans-serif;
+      background: #0a0f1e;
+      color: white;
+    }
+    h2 { font-size: 1rem; margin-bottom: 4px; }
+    p { font-size: 0.8rem; color: #94a3b8; margin-bottom: 12px; }
+    input {
+      width: 100%;
+      padding: 8px;
+      border-radius: 6px;
+      border: 1px solid #334155;
+      background: #1e293b;
+      color: white;
+      font-size: 1.2rem;
+      letter-spacing: 4px;
+      text-align: center;
+      box-sizing: border-box;
+      margin-bottom: 8px;
+    }
+    button {
+      width: 100%;
+      padding: 10px;
+      background: #10b981;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+      font-size: 0.9rem;
+    }
+    button:hover { background: #059669; }
+    .status {
+      text-align: center;
+      padding: 12px;
+      background: #10b98122;
+      border: 1px solid #10b981;
+      border-radius: 8px;
+    }
+    .status .icon { font-size: 2rem; }
+    .status .label { font-size: 0.85rem; color: #10b981; margin-top: 4px; }
+    .status .name { font-size: 0.75rem; color: #94a3b8; }
+    .error { color: #ef4444; font-size: 0.8rem; margin-top: 6px; }
+  </style>
+</head>
+<body>
+  <div id="setup-view">
+    <h2>🛡️ SafeGuard Setup</h2>
+    <p>Enter the 6-digit pairing code shown on the parent dashboard.</p>
+    <input id="code-input" type="text" maxlength="6" placeholder="000000" />
+    <input id="name-input" type="text" placeholder="Child's name (e.g. Emma)" style="letter-spacing:normal; margin-bottom:8px;" />
+    <button id="pair-btn">Connect Device</button>
+    <div id="error-msg" class="error"></div>
+  </div>
+
+  <div id="connected-view" style="display:none">
+    <div class="status">
+      <div class="icon">✅</div>
+      <div class="label">Device Connected</div>
+      <div class="name" id="child-name-display"></div>
+    </div>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>
